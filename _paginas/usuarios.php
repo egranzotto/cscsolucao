@@ -416,6 +416,24 @@
 
             $breadcrumb = montaBreadcrumb($principalBreadcrumb, $retorno_nome);
             $breadcrumb_subtitulo = "Novo Endereço";
+        
+        
+            if (isset($URL[4])) {
+                $endereco_cep = $URL[4];
+                
+                $endereco = correios("$endereco_cep"); 
+                
+                $endereco_estado = $endereco->uf;
+                $endereco_cidade = $endereco->localidade;
+                $endereco_logradouro = $endereco->logradouro;
+                $endereco_bairro = $endereco->bairro;
+            } else {
+                $endereco_cep = "";
+                $endereco_estado = "";
+                $endereco_cidade = "";
+                $endereco_logradouro = "";
+                $endereco_bairro = "";
+            }
 ?>
 
     <div class="row">
@@ -489,19 +507,19 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="cep">CEP</label>
-                                    <input type="text" id="cep" name="cep" class="form-control" required>
+                                    <input type="text" id="cep" name="cep" class="form-control" value="<?php echo $endereco_cep; ?>" required>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="estado">Estado</label>
-                                    <input type="text" id="estado" name="estado" class="form-control" required>
+                                    <input type="text" id="estado" name="estado" class="form-control" value="<?php echo $endereco_estado; ?>" required>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="cidade">Cidade</label>
-                                    <input type="text" id="cidade" name="cidade" class="form-control" required>
+                                    <input type="text" id="cidade" name="cidade" class="form-control" value="<?php echo $endereco_cidade; ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -510,7 +528,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="logradouro">Logradouro</label>
-                                    <input type="text" id="logradouro" name="logradouro" class="form-control" required>
+                                    <input type="text" id="logradouro" name="logradouro" class="form-control" value="<?php echo $endereco_logradouro; ?>" required>
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -522,7 +540,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="bairro">Bairro</label>
-                                    <input type="text" id="bairro" name="bairro" class="form-control" required>
+                                    <input type="text" id="bairro" name="bairro" class="form-control" value="<?php echo $endereco_bairro; ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -530,6 +548,7 @@
                         <input type="hidden" id="acao" name="acao" value="novo_endereco" />
                         <input type="hidden" id="url" name="url" value="<?php echo $link; ?>" />
                         <input type="hidden" id="id" name="id" value="<?php echo $retorno_id; ?>" />
+                        <input type="hidden" id="cep_old" name="cep_old" value="" />
                         <input type="submit" class="btn btn-success shiny" value="Salvar Endereço" />
                         <a href="<?php echo $link."/visualizar/".$retorno_id; ?>" class="btn btn-primary shiny">Cancelar</a>
                     </form>
@@ -570,11 +589,22 @@
             $endereco_bairro = $endereco["bairro"];
             $endereco_cidade = $endereco["cidade"];
             $endereco_estado = $endereco["estado"];
-            
         
         
             $breadcrumb = montaBreadcrumb($principalBreadcrumb, $retorno_nome);
             $breadcrumb_subtitulo = "Editar Endereço";
+        
+        
+            if (isset($URL[5])) {
+                    $endereco_cep = $URL[5];
+
+                    $endereco = correios("$endereco_cep"); 
+
+                    $endereco_estado = $endereco->uf;
+                    $endereco_cidade = $endereco->localidade;
+                    $endereco_logradouro = $endereco->logradouro;
+                    $endereco_bairro = $endereco->bairro;
+                }
 ?>
 
     <div class="row">
@@ -694,6 +724,7 @@
                         <input type="hidden" id="url" name="url" value="<?php echo $link; ?>" />
                         <input type="hidden" id="id" name="id" value="<?php echo $retorno_id; ?>" />
                         <input type="hidden" id="id_endereco" name="id_endereco" value="<?php echo $endereco_id; ?>" />
+                        <input type="hidden" id="cep_old" name="cep_old" value="<?php echo $endereco_cep; ?>" />
                         <input type="submit" class="btn btn-success shiny" value="Salvar Endereço" />
                         <a href="<?php echo $link."/visualizar/".$retorno_id; ?>" class="btn btn-primary shiny">Cancelar</a>
                     </form>

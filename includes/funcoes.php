@@ -20,102 +20,20 @@
 		return $data;
 	}
     
+    function correios($cep){
+        // formatar o cep removendo caracteres nao numericos
+        $cep = preg_replace("/[^0-9]/", "", $cep);
+        $url = "http://viacep.com.br/ws/$cep/xml/";
 
-    function mudaDataHora($data_hora, $tipo=1) {
-        $aux = explode(" ", $data_hora);
-        $data = $aux[0];
-        $hora = $aux[1];
+        $xml = simplexml_load_file($url);
+        return $xml;
         
-        if ($tipo == 1) {
-            $data = explode("-", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno["ano"] = $data[0];
-            $retorno["mes"] = $data[1];
-            $retorno["dia"] = $data[2];
-            $retorno["hora"] = $hora[0];
-            $retorno["minuto"] = $hora[1];
-            $retorno["segundo"] = $hora[2];
-            
-        } else if ($tipo == 2) {
-            $data = explode("-", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno["ano"] = $data[0];
-            $retorno["mes"] = mes($data[1], 2);
-            $retorno["dia"] = $data[2];
-            $retorno["hora"] = $hora[0];
-            $retorno["minuto"] = $hora[1];
-            $retorno["segundo"] = $hora[2];
-            
-        } else if ($tipo == 3) {
-            $data = explode("-", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno = $data[2]."/".$data[1]."/".$data[0]." as ".$hora[0]."/".$hora[1]."hs";
-            
-        } else if ($tipo == 4) {
-            // aaaa-mm-dd hh:mm:ss -> mm dd, aaaa hh:mm:ss
-            $data = explode("-", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno = $data[1]." ".$data[2].", ".$data[0]." ".$hora[0].":".$hora[1].":".$hora[2];
-        
-        } else if ($tipo == 5) {
-            // aaaa-mm-dd hh:mm:ss -> dd/mm/aaaa hh:mm:ss
-            $data = explode("-", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno = $data[2]."/".$data[1]."/".$data[0]." ".$hora[0].":".$hora[1].":".$hora[2];
-            
-        } else if ($tipo == 6) {
-            // dd/mm/aaaa hh:mm:ss -> aaaa-mm-dd hh:mm:ss
-            $data = explode("/", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno = $data[2]."-".$data[1]."-".$data[0]." ".$hora[0].":".$hora[1].":".$hora[2];
-            
-        } else if ($tipo == 7) {
-            // aaaa-mm-dd hh:mm:ss -> dd mmm
-            $data = explode("-", $data);
-            $hora = explode(":", $hora);
-            
-            $retorno["dia"] = $data[2];
-            $retorno["mes"] = mes($data[1], 2);
-            
-        } else if ($tipo == 8) {
-            // aaaa-mm-dd hh:mm:ss -> JAN dd SEXTA 24h59
-            $dia_semana_numero = date('w', strtotime($data));
-            
-            $data = explode("-", $data);
-            $hora = mudaHora($hora);
-            
-            $retorno["dia"] = $data[2];
-            $retorno["dia_semana"] = diaSemana($dia_semana_numero, 2);
-            $retorno["mes"] = mes($data[1], 2);
-            $retorno["hora"] = mudaHora($hora, 3);
-            
-        } else if ($tipo == 9) {
-            // aaaa-mm-dd hh:mm:ss -> JAN dd SEXTA 24h59
-            $dia_semana_numero = date('w', strtotime($data));
-            
-            $data = explode("-", $data);
-            $hora = mudaHora($hora);
-            
-            $dia = $data[2];
-            $dia_semana = diaSemana($dia_semana_numero, 2);
-            $mes = mes($data[1], 2);
-            $hora = mudaHora($hora, 3);
-            
-            $retorno = $mes." ".$dia." ".$dia_semana.", ".$hora;
-            
-        } else {
-            $retorno = 0;
-        }
-        
-        return $retorno;
+        //$endereco = correios("78050-260"); 
+        //echo $endereco->uf;
+        //echo $endereco->localidade;
+        //echo $endereco->logradouro;
+        //echo $endereco->bairro;
     }
-
 	
 
 /****************************************************/
@@ -150,70 +68,5 @@
             
         return $breadcrumb;
     }
-
-
-
-/*************************************************************/
-/********************** DADOS ESTATICOS **********************/
-    function simNao($parametro) {
-        if ($parametro == 0) {
-            $retorno = "Não";
-        } else if ($parametro == 1) {
-            $retorno = "Sim";
-        } else {
-            $retorno = "-";
-        }
-        
-        return $retorno;
-    }
-
-    function perfil($perfil) {
-        if ($perfil == "A") {
-            $retorno = "Administrador";
-        } else if ($perfil == "G") {
-            $retorno = "Gestor";
-        } else {
-            $retorno = "-";
-        }
-        
-        return $retorno;
-    }
-
-    function status($status) {
-        if ($status == 0) {
-            $retorno = "<b class='red'>Inativo</b>";
-        } else if ($status == 1) {
-            $retorno = "<b>Ativo</b>";
-        } else {
-            $retorno = "-";
-        }
-        
-        return $retorno;
-    }
-
-    function tipo($tipo) {
-        if ($tipo == "materia") {
-            $retorno = "Matéria";
-        } else if ($tipo == "video") {
-            $retorno = "Vídeo";
-        } else {
-            $retorno = "-";
-        }
-        
-        return $retorno;
-    }
-    
-    function statusPedido($status) {
-        if ($status == "F") {
-            $retorno = "Fechado";
-        } else if ($status == "A") {
-            $retorno = "Aberto";
-        } else {
-            $retorno = "-";
-        }
-        
-        return $retorno;
-    }
-
 
 ?>
