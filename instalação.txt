@@ -1,0 +1,3 @@
+Para instalação deve editar o arquivo .htaccess informando a pasta raiz do sitema substituindo o caminho /csc/
+
+Ediar o arquivo config.php dentro da pasta includes e informar dados do banco e caminho da pasta raiz
